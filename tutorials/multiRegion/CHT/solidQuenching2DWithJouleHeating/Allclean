@@ -1,0 +1,13 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions      # Tutorial clean functions
+#------------------------------------------------------------------------------
+
+cleanCase
+
+rm   -v operation.csv
+rm -rfv constant/cellToRegion
+rm -rfv constant/*/polyMesh  # region meshes
+rm -rfv 0
+
+#------------------------------------------------------------------------------

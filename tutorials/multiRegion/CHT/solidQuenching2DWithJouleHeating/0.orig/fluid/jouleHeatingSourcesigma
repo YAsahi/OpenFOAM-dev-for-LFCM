@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2512                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      jouleHeatingSource:sigma;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ -1 -3 3 0 0 2 0 ];
+
+internalField   uniform  1275.998469;
+
+boundaryField
+{
+    fluid_to_solid1
+    {
+        type            zeroGradient;
+    }
+    fluid_to_solid2
+    {
+        type            zeroGradient;
+    }
+    maxY
+    {
+        type            zeroGradient;
+    }
+    minX
+    {
+        type            zeroGradient;
+    }
+    maxX
+    {
+        type            zeroGradient;
+    }
+    minY
+    {
+        type            zeroGradient;
+    }
+}
+
+
+// ************************************************************************* //

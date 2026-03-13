@@ -1,0 +1,66 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2512                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      jouleHeatingSource:V;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 1 2 -3 0 0 -1 0 ];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    fluid_to_solid1
+    {
+        type            fixedValue;
+        value           uniform 20;
+    }
+    fluid_to_solid2
+    {
+        type              uniformFixedValue;
+      //type              banana;
+      //type              timeVaryingMappedFixedValue;
+        uniformValue
+        {
+          //type                         banana;
+            type                        csvFile;
+            nHeaderLine                       1; // ヘッダー部分の行数
+            refColumn                         0; // 時間データが書かれたカラム番号
+            componentColumns                (1); // 補間データが書かれたカラム番号
+            separator                       ","; // データの区切り文字 (デフォルトは ",")
+            mergeSeparators                  no; // 複数の区切り文字をマージするかどうか
+            file           "$PWD/operation.csv"; // csvファイルのファイル名
+            outOfBounds                   clamp; // 範囲外のデータ処理方法（オプション）
+            interpolationScheme          linear; // 補間方法 [linear(デフォルト)|spline]（オプション）;
+        };
+    }
+    maxY
+    {
+        type            zeroGradient;
+    }
+    minX
+    {
+        type            zeroGradient;
+    }
+    maxX
+    {
+        type            zeroGradient;
+    }
+    minY
+    {
+        type            zeroGradient;
+    }
+}
+
+
+// ************************************************************************* //

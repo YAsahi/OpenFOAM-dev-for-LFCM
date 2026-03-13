@@ -1,0 +1,40 @@
+#!/bin/sh
+cd "${0%/*}" || exit                                # Run from this directory
+. ${WM_PROJECT_DIR:?}/bin/tools/RunFunctions        # Tutorial run functions
+#------------------------------------------------------------------------------
+
+cp -rv ./0.orig ./0
+
+runApplication blockMesh
+
+# Mesh zone (See User's Guide Sec.5.6)
+runApplication topoSet     # deprecated and superseded
+#runApplication createZones # from OpenFOAM-13+
+
+# Split mesh into multiple regions
+runApplication splitMeshRegions -cellZones
+
+# Set alpha
+cp  -v ./0.orig/fluid/alpha.water.orig ./0/fluid/alpha.water
+runApplication setFields -region fluid
+
+## Remove fluid fields from solid regions (important for post-processing)
+#fields="nut alphat epsilon k U p_rgh"
+#
+#for region in $(foamListRegions solid)
+#do
+#    remove0DirFields -region "$region" -- $fields
+#done
+
+# Generate operation.csv
+#python3 system/generateCSV_JouleHeatingSourceV.py
+
+paraFoam -touchAll
+#paraFoam -region fluid  -touch
+#paraFoam -region solid1 -touch
+#paraFoam -region solid2 -touch
+
+# Run on single processor
+runApplication foamMultiRun
+
+#------------------------------------------------------------------------------

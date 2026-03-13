@@ -1,0 +1,81 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2512                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    {
+        name    Electrode1CellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (-1e-3 29e-3 -1) (4.77e-3 70e-3 1);
+    }
+    {
+        name    Electrode2CellSet;
+        type    cellSet;
+        action  new;
+        source  boxToCell;
+        box     (65.23e-3 29e-3 -1) (71e-3 70e-3 1);
+    }
+
+    {
+        name    solid1;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     Electrode1CellSet;
+    }
+
+    {
+        name    solid2;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     Electrode2CellSet;
+    }
+
+    {
+        name    bottomFluidCellSet;
+        type    cellSet;
+        action  new;
+        source  cellToCell;
+        set     Electrode1CellSet;
+    }
+
+    {
+        name    bottomFluidCellSet;
+        type    cellSet;
+        action  add;
+        source  cellToCell;
+        set     Electrode2CellSet;
+    }
+
+    {
+        name    bottomFluidCellSet;
+        type    cellSet;
+        action  invert;
+    }
+
+    {
+        name    fluid;
+        type    cellZoneSet;
+        action  new;
+        source  setToCellZone;
+        set     bottomFluidCellSet;
+    }
+
+);
+
